@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-rvm_trust_rvmrcs_flag=1
+export rvm_trust_rvmrcs_flag=1
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 if [[ -s "/usr/local/rvm/scripts/rvm" ]] ; then
@@ -23,4 +23,4 @@ else
   export RAILS_ENV=production
 fi
 
-exec unicorn -c "$DIR/config/unicorn.rb" -E "$RACK_ENV" -D
+exec bin/unicorn -c "$DIR/config/unicorn.rb" -E "$RACK_ENV" -D
