@@ -23,4 +23,4 @@ else
   export RAILS_ENV=production
 fi
 
-exec bin/unicorn -c "$DIR/config/unicorn.rb" -E "$RACK_ENV" -D
+exec bundle exec bin/unicorn -c "$DIR/config/unicorn.rb" -E "$RACK_ENV" -D
