@@ -10,12 +10,25 @@ class Service < Sinatra::Base
   helpers  Helpers
 
   configure do
+
+    set :haml, { :ugly=>true }
+    set :clean_trace, true
+    Dir.mkdir('log') unless File.exist?('log')
+
+    $logger = Logger.new('log/common.log','weekly')
+    $logger.level = Logger::WARN
+
+    # Spit stdout and stderr to a file during production
+    # in case something goes wrong
+    $stdout.reopen("log/output.log", "w")
+    $stdout.sync = true
+    $stderr.reopen($stdout)
+
+
     databases = YAML.load_file("config/database.yml")
     ActiveRecord::Base.establish_connection(databases[Config.env])
 
-    if Config.development?
-      ActiveRecord::Base.logger = Logger.new(STDOUT)
-    end
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
   end
 
   mime_type :json, "application/json"
